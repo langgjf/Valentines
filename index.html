@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Valentine 💘</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #fff7f9;
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* -------- INITIAL VIEW -------- */
+#initial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+img.initial-gif {
+  width: min(200px, 50vw);
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  margin-bottom: 30px;
+}
+
+.button-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+button {
+  width: 140px;
+  height: 60px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+.single {
+  width: 160px;
+}
+
+/* YES growth animation */
+.yes-spin {
+  animation: spinOnce 0.6s ease;
+}
+
+@keyframes spinOnce {
+  from { transform: rotate(0deg) scale(var(--scale,1)); }
+  to   { transform: rotate(360deg) scale(var(--scale,1)); }
+}
+
+/* No shrink */
+.shrink-away {
+  animation: shrinkFade 3s forwards ease-in-out;
+}
+
+@keyframes shrinkFade {
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/* -------- END VIEW -------- */
+#end {
+  display: none;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.corner-gif {
+  position: absolute;
+  width: min(160px, 28vw);
+}
+
+.top-left { top: 40px; left: 40px; }
+.top-right { top: 40px; right: 40px; }
+.bottom-left { bottom: 40px; left: 40px; }
+.bottom-right { bottom: 40px; right: 40px; }
+
+.center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 800;
+  animation: spinText 2s ease-in-out;
+}
+
+@keyframes spinText {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(720deg); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INITIAL SCREEN -->
+<div id="initial">
+  <img src="rabbitInitial.gif" class="initial-gif" />
+
+  <h1>Will you be my Valentine?</h1>
+
+  <div class="button-grid">
+    <div class="row">
+      <button id="yesBtn">A. Yes</button>
+      <button id="btnB">B. A</button>
+    </div>
+
+    <div class="row">
+      <button id="btnC">C. B</button>
+      <button id="btnD">D. C</button>
+    </div>
+
+    <button class="single" id="noBtn">E. No</button>
+  </div>
+</div>
+
+<!-- END SCREEN -->
+<div id="end">
+  <img src="rabbitEnd1.gif" class="corner-gif top-left" />
+  <img src="rabbitEnd2.gif" class="corner-gif top-right" />
+  <img src="rabbitEnd3.gif" class="corner-gif bottom-left" />
+  <img src="rabbitEnd4.gif" class="corner-gif bottom-right" />
+
+  <div class="center-text">
+    YAYYYYY! I know it!<br />
+    I love youuu!! ❤️
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const btnB = document.getElementById("btnB");
+const btnC = document.getElementById("btnC");
+const btnD = document.getElementById("btnD");
+const initial = document.getElementById("initial");
+const end = document.getElementById("end");
+
+/* ---------- YES GROW LOGIC ---------- */
+let yesScale = 1;
+
+function growYes() {
+
+  yesScale += 0.15; // growth amount
+  yesBtn.style.setProperty("--scale", yesScale);
+  yesBtn.style.transform = `scale(${yesScale})`;
+
+  // spin effect
+  yesBtn.classList.add("yes-spin");
+
+  setTimeout(() => {
+    yesBtn.classList.remove("yes-spin");
+  }, 600);
+}
+
+/* Attach to B / C / D buttons */
+btnB.addEventListener("click", growYes);
+btnC.addEventListener("click", growYes);
+btnD.addEventListener("click", growYes);
+
+/* ---------- NO disappears ---------- */
+setTimeout(() => {
+  noBtn.classList.add("shrink-away");
+  noBtn.style.pointerEvents = "none";
+}, 5000);
+
+/* ---------- YES clicked → end screen ---------- */
+yesBtn.addEventListener("click", () => {
+  initial.style.display = "none";
+  end.style.display = "block";
+});
+</script>
+
+</body>
+</html>
